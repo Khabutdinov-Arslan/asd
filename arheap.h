@@ -2,6 +2,8 @@ using std::invalid_argument;
 using std::out_of_range;
 using std::logic_error;
 
+
+
 template <typename T> class Heap{
 private:
     Vector<T> nodes;
@@ -28,6 +30,7 @@ private:
         }
     }
 public:
+    Heap(){}
     bool is_empty(){
         return nodes.get_size() == 0;
     }
@@ -52,5 +55,14 @@ public:
     void insert(T key){
         nodes.push_back(key);
         sift_up(nodes.get_size() - 1);
+    }
+    template<class Iterator>
+    Heap(Iterator begin, Iterator end){
+        for (Iterator i = begin; i != end; i++){
+            nodes.push_back(*i);
+        }
+        for (int i = nodes.get_size() / 2; i >= 0; i--){
+            sift_down(i);
+        }
     }
 };

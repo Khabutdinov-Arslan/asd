@@ -74,21 +74,46 @@ TEST (HeapTest, SmallTest){
     EXPECT_EQ(a.get_min(), 2);
 }
 
-TEST (HeapTest, LargeTest){
-    Heap <int> a;
-    std::multiset <int> b;
+TEST (HeapTest, LargeStressTest){
+    std::vector <int> b;
+    std::multiset <int> c;
     const int TEST_SIZE = 1000000;
     for (int i = 0; i < TEST_SIZE; i++){
-        int cur = rand(), act = rand() % 2;
-        if (act && !a.is_empty()){
-            int r1 = a.extract_min();
-            int r2 = *b.begin();
-            b.erase(b.begin());
-            EXPECT_EQ(r1, r2);
-        }else{
-            a.insert(cur);
-            b.insert(cur);
-        }
+        b.push_back(rand());
+        c.insert(b[i]);
+    }
+    Heap <int> a(b.begin(), b.end());
+    for (int i = 0; i < TEST_SIZE; i++){
+        int r1 = a.get_min(), r2 = *c.begin();
+        EXPECT_EQ(r1, r2);
+        a.extract_min();
+        c.erase(c.begin());
+    }
+}
+
+TEST (HeapTest, MassConstructorSpeedTest){
+    const int TEST_SIZE = 1000000;
+    int b[TEST_SIZE];
+    for (int i = 0; i < TEST_SIZE; i++){
+        b[i] = rand();
+    }
+    Heap <int> a(b, b + TEST_SIZE);
+}
+
+TEST (HeapTest, ConstructorSpeedTest){
+    const int TEST_SIZE = 1000000;
+    int b[TEST_SIZE];
+    for (int i = 0; i < TEST_SIZE; i++){
+        b[i] = rand();
+    }
+    Heap <int> a(b, b + TEST_SIZE);
+}
+
+TEST (HeapTest, LargeSpeedTest){
+    Heap <int> a;
+    const int TEST_SIZE = 1000000;
+    for (int i = 0; i < TEST_SIZE; i++){
+        a.insert(rand());
     }
 }
 
