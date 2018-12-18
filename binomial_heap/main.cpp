@@ -55,6 +55,30 @@ TEST (HeapTest, LargeStressTest) {
     }
 }
 
+TEST (HeapTest, MergeSmallTest){
+    BinomialHeap <int> a, b;
+    a.insert(2);
+    b.insert(1);
+    a.merge(&b);
+    EXPECT_EQ(a.extract_min(), 1);
+    EXPECT_EQ(a.extract_min(), 2);
+}
+
+TEST (HeapTest, MergeSpeedTest){
+    BinomialHeap <int> a, b;
+    for (int i = 1; i <= 100000; i++){
+        if (i % 2 == 1){
+            a.insert(i);
+        }else{
+            b.insert(i);
+        }
+    }
+    b.merge(&a);
+    for (int i = 1; i <= 100000; i++){
+        EXPECT_EQ(b.extract_min(), i);
+    }
+}
+
 
 TEST (HeapTest, LargeSpeedTest) {
     BinomialHeap<int> a;
