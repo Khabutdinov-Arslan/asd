@@ -1,3 +1,7 @@
 language: c++
 build: make
 script: cmake . && make
+notifications:
+  email:
+    on_success: always
+    on_failure: always
